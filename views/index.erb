@@ -1,0 +1,94 @@
+
+<% @texts.each do |text| %>
+
+  <div>
+
+    <p>
+      To: <%= text.phone %>
+    </p>
+
+    <p>
+    	Sent: <%= text.created_at %>
+    </p>
+
+    <p class="content">
+      <%= text.content %>
+    </p>
+
+    
+
+  </div>
+
+	<script type="text/javascript">
+			
+			// bg color picker to dynamically run through 'spectrum' typical colors...
+
+			// variables for keeping track of r,g,b of colors
+			// by setting different starting numbers for r, g, and b and
+			// by changing the multiple in the last_color/next_color = rgba() commands,
+			// a larger or smaller spectrum can be iterated over...
+			var r = 1;
+			var g = -1;
+			var b = 5;
+			var r_ascending = false;
+			var g_ascending = true;
+			var b_ascending = false;
+
+
+			$('div').each(function() {
+
+				// set last_color before new color values are set.
+				// to be used as bg color of last message sent
+				last_color = "rgba(" + r*120 + "," + g*120 + "," + b*120 + "," + 0.35 + ")";
+
+				// variables to track the incremental direction of each color
+				r_ascending = ascend(r, r_ascending);
+				g_ascending = ascend(g, g_ascending);
+				b_ascending = ascend(b, b_ascending);
+
+				// reset each color value
+				r = col_val(r, r_ascending);
+				g = col_val(g, g_ascending);
+				b = col_val(b, b_ascending);
+				
+				// increase or decrease current r, g, b value depending on which
+				// way they should be headed as determined by ascend() function.
+				function col_val(rgb_val, rgb_up) {
+
+					if (rgb_up) {
+						rgb_val++;
+					}
+					else {
+						rgb_val--;
+					}
+
+					return rgb_val;
+				}
+
+				// determine which direction the r,g,b value should be heading in
+				// to maintain a roygbiv like spectrum
+				function ascend(rgb, rgb_up) {
+					if (rgb >= 4) {
+						rgb_up = false;
+					}
+					else if (rgb <= -2) {
+						rgb_up = true;
+					}
+					return rgb_up;
+				}
+
+				// sets the next color based on new color values.
+				// to be used as bg color of the 'send' button.
+				next_color = "rgba(" + r*120 + "," + g*120 + "," + b*120 + "," + 0.35 + ")";
+
+				// set the bg color of latest message sent
+				$(this).css("background-color", last_color);
+				
+			});
+
+
+	</script>
+
+
+<% end %>
+
